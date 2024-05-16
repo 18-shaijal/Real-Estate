@@ -32,8 +32,13 @@ app.listen(3000, () => {
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
+const corsOptions = {
+    origin: 'https://real-estate-29ch-git-main-shaijal-guptas-projects.vercel.app/',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  };
 
-
+app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
 app.get('*', (req, res) => {
