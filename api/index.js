@@ -6,6 +6,7 @@ import authRouter from './routes/auth.route.js';
 import listingRouter from './routes/listing.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import cors from 'cors'; // Import CORS middleware
 dotenv.config();
 
 mongoose
@@ -17,12 +18,13 @@ mongoose
     console.log(err);
   });
 
-  const __dirname = path.resolve();
+const __dirname = path.resolve();
 
 const app = express();
 
-app.use(express.json());
+app.use(cors()); // Apply CORS middleware
 
+app.use(express.json());
 app.use(cookieParser());
 
 app.listen(3000, () => {
@@ -32,13 +34,7 @@ app.listen(3000, () => {
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
-const corsOptions = {
-    origin: 'https://real-estate-29ch-git-main-shaijal-guptas-projects.vercel.app/',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  };
 
-app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
 app.get('*', (req, res) => {
